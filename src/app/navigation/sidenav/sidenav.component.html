@@ -1,0 +1,39 @@
+<mat-nav-list>
+  <mat-list-item>
+    <mat-icon>assignment_ind</mat-icon>
+    <span class="nav-caption">{{userName}}</span>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <a *ngIf="!isAuth"
+     mat-list-item
+     routerLink="/signin"
+     (click)="onClose()"
+     [routerLinkActive]="['list-item-active']">
+    <mat-icon>input</mat-icon>
+    <span class="nav-caption">Войти</span>
+  </a>
+  <a *ngIf="!isAuth"
+     mat-list-item
+     routerLink="/signup"
+     (click)="onClose()"
+     [routerLinkActive]="['list-item-active']">
+    <mat-icon>face</mat-icon>
+    <span class="nav-caption">Регистрация</span>
+  </a>
+  <a mat-list-item
+     routerLink="/todo"
+     (click)="onClose()"
+     [routerLinkActive]="['list-item-active']">
+    <mat-icon>fitness_center</mat-icon>
+    <span class="nav-caption">Список задач</span>
+  </a>
+  <mat-list-item>
+    <button *ngIf="isAuth"
+            mat-icon-button
+            (click)="onLogout()"
+            id="nav-logout-button">
+      <mat-icon>eject</mat-icon>
+      <span class="nav-caption">Выйти</span>
+    </button>
+  </mat-list-item>
+</mat-nav-list>

@@ -1,0 +1,69 @@
+<div class="new-task-form-wrapper"
+     fxFlex.xs="calc(100% - 32px)"
+     fxFlex.gt-xs="400px">
+  <h2 mat-dialog-title>Опишите задачу</h2>
+  <mat-dialog-content [formGroup]="form"
+                      fxLayout="row wrap"
+                      fxLayoutAlign="space-between">
+    <div fxLayout="column"
+         fxFlex.xs="100%"
+         fxFlex.gt-xs="280px">
+      <mat-form-field>
+        <mat-label>
+          <mat-icon>subtitles</mat-icon>
+          Задача
+        </mat-label>
+        <input type="text"
+               matInput
+               placeholder="+ Добавить название"
+               formControlName="name">
+        <mat-error *ngIf="form.get('name').hasError('required') && form.get('name').touched">
+          Нельзя оставлять это поле пустым.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>
+          <mat-icon>notes</mat-icon>
+          Описание
+        </mat-label>
+        <textarea matInput
+                  placeholder="+ Добавить более подробное описание"
+                  formControlName="description">
+      </textarea>
+      </mat-form-field>
+    </div>
+    <div fxLayout="column" fxLayoutGap="15px">
+      <mat-radio-group fxLayout="column"
+                       fxLayoutGap="10px"
+                       gdAlignColumns="center"
+                       aria-label="Select an option"
+                       formControlName="priority">
+        <mat-label>Приоритет:</mat-label>
+        <mat-radio-button value="low">Низкий</mat-radio-button>
+        <mat-radio-button value="medium">Средний</mat-radio-button>
+        <mat-radio-button value="high">Высокий</mat-radio-button>
+      </mat-radio-group>
+      <mat-radio-group fxLayout="column"
+                       fxLayoutGap="10px"
+                       gdAlignColumns="center"
+                       aria-label="Select an option"
+                       formControlName="tagColor">
+        <mat-label>Тег:</mat-label>
+        <mat-radio-button value="red" [style.color]="'red'">Важное</mat-radio-button>
+        <mat-radio-button value="blue" [style.color]="'blue'">Покупки</mat-radio-button>
+        <mat-radio-button value="gray" [style.color]="'gray'">Работа</mat-radio-button>
+        <mat-radio-button value="green" [style.color]="'green'">Отдых</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout.xs="column">
+    <button fxHide.xs mat-raised-button (click)="close()">Отмена</button>
+    <button mat-raised-button
+            color="primary"
+            [disabled]="form.invalid"
+            (click)="add()">
+      Добавить
+    </button>
+  </mat-dialog-actions>
+</div>
+

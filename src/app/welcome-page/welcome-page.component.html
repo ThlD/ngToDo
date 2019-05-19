@@ -1,0 +1,12 @@
+<div class="welcome-content" fxLayout="column" fxLayoutAlign="center center">
+  <section>
+    <h1>Добро пожаловать в ngTODO</h1>
+    <p *ngIf="isAuth">Чтобы приступить к работе, откройте список задач.</p>
+    <div *ngIf="!isAuth">
+      <p>Вы можете просматривать существующие задачи в гостевом режиме.</p>
+      <p>Для того чтобы иметь возможность создания и редактирования задач: </p>
+      <p><a [routerLink]="'/signup'">Создайте новый аккаунт для входа</a></p>
+      <p><a [routerLink]="'/signin'">Или войдите в существующий</a></p>
+    </div>
+  </section>
+</div>

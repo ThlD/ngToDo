@@ -1,0 +1,47 @@
+<mat-toolbar color="primary" fxLayoutGap="20px">
+  <div fxHide fxShow.lt-md>
+    <button mat-icon-button (click)="onSidenavToggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <div><a routerLink="/welcome">ngToDo</a></div>
+  <div fxFlex
+       fxLayout
+       fxLayoutAlign="start"
+       fxHide.lt-md>
+    <a routerLink="/todo" [routerLinkActive]="['list-item-active']">Список задач</a>
+  </div>
+  <div fxFlex fxLayoutAlign="end" fxLayoutGap="10px">
+    <button *ngIf="isAuth && isTodoPage" mat-raised-button (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+      Добавить задачу
+    </button>
+    <div>
+      <mat-slide-toggle fxHide fxShow.gt-sm [checked]="isDarkTheme | async" (change)="toggleDarkTheme($event.checked)">
+        Затемнить
+      </mat-slide-toggle>
+      <button fxHide.gt-sm mat-icon-button [matMenuTriggerFor]="theme">
+        <mat-icon>color_lens</mat-icon>
+      </button>
+      <mat-menu #theme="matMenu">
+        <mat-slide-toggle [checked]="isDarkTheme | async" (change)="toggleDarkTheme($event.checked)">
+          Dark theme
+        </mat-slide-toggle>
+      </mat-menu>
+    </div>
+    <button fxHide.xs mat-button [matMenuTriggerFor]="menu">
+      <mat-icon>assignment_ind</mat-icon>
+      <span>{{userName}}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button *ngIf="!isAuth" mat-menu-item routerLink="/signin" [routerLinkActive]="['list-item-active']">
+        Войти
+      </button>
+      <button *ngIf="!isAuth" mat-menu-item routerLink="/signup" [routerLinkActive]="['list-item-active']">
+        Регистрация
+      </button>
+      <button *ngIf="isAuth" mat-menu-item (click)="onLogout()">Выйти</button>
+    </mat-menu>
+  </div>
+</mat-toolbar>

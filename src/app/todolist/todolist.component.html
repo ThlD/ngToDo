@@ -1,0 +1,136 @@
+<div class="lists"
+     cdkDropListGroup
+     fxLayout="column">
+  <div *ngIf="!isLoading" class="todo-container column-container">
+    <div class="list"
+         cdkDropList
+         [cdkDropListData]="todoList"
+         (cdkDropListDropped)="drop($event)">
+      <div fxLayout fxLayoutAlign="center center">
+        <h2>Предстоит выполнить:
+          <span>({{(todoList | filterByPrio:filterValue).length}})</span>
+        </h2>
+        <button class="pull-right"
+                mat-icon-button
+                color="primary"
+                matTooltip="Фильтрация по приоритету"
+                aria-label="Button that displays a tooltip when focused or hovered over"
+                [matMenuTriggerFor]="filterMenu">
+          <mat-icon>filter_list</mat-icon>
+        </button>
+        <mat-menu #filterMenu="matMenu">
+          <button mat-menu-item (click)="filterTaskByPrio('high')">
+            <mat-icon>priority_high</mat-icon>
+            Высокий приоритет
+          </button>
+          <button mat-menu-item (click)="filterTaskByPrio('medium')">
+            <mat-icon>weekend</mat-icon>
+            Средний приоритет
+          </button>
+          <button mat-menu-item (click)="filterTaskByPrio('low')">
+            <mat-icon>low_priority</mat-icon>
+            Низкий приоритет
+          </button>
+          <button mat-menu-item (click)="filterTaskByPrio(null)">
+            <mat-icon>block</mat-icon>
+            Сбросить фильтр
+          </button>
+        </mat-menu>
+        <button mat-icon-button
+                color="primary"
+                matTooltip="Сортировка по дате создания"
+                aria-label="Button that displays a tooltip when focused or hovered over"
+                [matMenuTriggerFor]="sortMenu">
+          <mat-icon>sort</mat-icon>
+        </button>
+        <mat-menu #sortMenu="matMenu">
+          <button mat-menu-item (click)="sortTaskByDate(true)">
+            <mat-icon>arrow_drop_down</mat-icon>
+            От новых к старым
+          </button>
+          <button mat-menu-item (click)="sortTaskByDate(false)">
+            <mat-icon>arrow_drop_up</mat-icon>
+            От старых к новым
+          </button>
+        </mat-menu>
+      </div>
+      <mat-card *ngFor="let todo of (todoList | filterByPrio:filterValue) | sortByDate:sortField:isNewTasksFirst"
+                cdkDrag
+                id="{{todo.id}}">
+        <div class="task-info"
+             fxLayoutAlign="end center"
+             fxLayoutGap="10px">
+          <div class="task-priority">
+            <mat-icon *ngIf="todo.priority === 'low'">arrow_downward</mat-icon>
+            <span *ngIf="todo.priority === 'low'">Низкий приоритет</span>
+            <mat-icon *ngIf="todo.priority === 'high'">arrow_upward</mat-icon>
+            <span *ngIf="todo.priority === 'high'">Высокий приоритет</span>
+          </div>
+          <div class="task-date">
+            <mat-icon>access_time</mat-icon>
+            <span>{{todo.date | todoMoment:'X'}}</span>
+          </div>
+        </div>
+        <mat-card-header>
+          <div mat-card-avatar
+               class="card-avatar"
+               [ngStyle]="{backgroundColor: todo.tagColor}">
+            {{todo.ownerLetter.toUpperCase()}}</div>
+          <mat-card-title>{{todo.name}}</mat-card-title>
+          <mat-card-subtitle>{{todo.description}}</mat-card-subtitle>
+          <button *ngIf="isAuth" class="task-dropdown" mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onDone(todo.id)">Отметить как "Выполнено"</button>
+            <button mat-menu-item (click)="openDialog(todo)">Редактировать</button>
+            <button mat-menu-item (click)="deleteTask(todo.id)">Удалить</button>
+          </mat-menu>
+        </mat-card-header>
+      </mat-card>
+    </div>
+  </div>
+  <div *ngIf="!isLoading" class="done-container column-container">
+    <div
+      class="list"
+      cdkDropList
+      [cdkDropListData]="doneList"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <h2>Выполнено:
+        <span>({{(doneList | filterByPrio:filterValue).length}})</span>
+      </h2>
+      <mat-card
+        *ngFor="let done of (doneList | filterByPrio:filterValue)  | sortByDate:sortField:isNewTasksFirst"
+        cdkDrag
+        id="{{done.id}}"
+      >
+        <div class="task-info"
+             fxLayoutAlign="end"
+             fxLayoutGap="10px">
+          <div class="task-completed">
+            <mat-icon>access_time</mat-icon>
+            <span class="is-completed">Completed!</span>
+          </div>
+        </div>
+        <mat-card-header>
+          <div mat-card-avatar class="card-avatar"
+               [ngStyle]="{backgroundColor: done.tagColor}">{{done.ownerLetter.toUpperCase()}}</div>
+          <mat-card-title>{{done.name}}</mat-card-title>
+          <mat-card-subtitle>{{done.description}}</mat-card-subtitle>
+          <button *ngIf="isAuth" class="task-dropdown" mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onTodo(done.id)">Отметить как "Предстоит выполнить"</button>
+            <button mat-menu-item (click)="openDialog(done)">Редактировать</button>
+            <button mat-menu-item (click)="deleteTask(done.id)">Удалить</button>
+          </mat-menu>
+        </mat-card-header>
+      </mat-card>
+    </div>
+  </div>
+  <div class="uploader-status" *ngIf="isLoading" fxLayoutAlign="center">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>

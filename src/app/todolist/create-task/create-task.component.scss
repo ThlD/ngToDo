@@ -1,0 +1,36 @@
+textarea {
+  width: 100%;
+  overflow: auto;
+  resize: none;
+  height: 100px;
+}
+
+mat-form-field {
+  margin-bottom: 15px;
+}
+
+button {
+  margin-bottom: 10px;
+}
+
+.icon-close {
+  display: inline-block;
+  border-radius: 50%;
+  font-size: 20px;
+  position: relative;
+  top: 0;
+  right: 0;
+  height: 32px;
+  overflow: hidden;
+  padding: 4px;
+  margin: 4px;
+  width: 32px;
+  color: #42526e;
+  background-color: transparent;
+  z-index: 2000;
+  transition: background-color .1s, color .1s;
+
+  .icon-close::before {
+    content: "\E951";
+  }
+}
