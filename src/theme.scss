@@ -1,0 +1,47 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$primary: mat-palette($mat-blue-grey, 700);
+$accent:  mat-palette($mat-deep-orange, 500, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$warn:    mat-palette($mat-red, 600);
+$success: mat-palette($mat-light-green, A700);
+$active: mat-palette($mat-green, 400);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);
+
+
+.dark-theme {
+  color: $light-primary-text;
+  $dark-primary: mat-palette($mat-yellow);
+  $dark-accent: mat-palette($mat-amber, A400, A100, A700);
+  $dark-warn: mat-palette($mat-red);
+  $dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+  @include angular-material-theme($dark-theme);
+
+  a {
+    color: white;
+  }
+}
+
+.list-item-active {
+  font-weight: bold;
+  color: mat-color($active, 400) !important;
+}
+
+.task-completed {
+  display: flex;
+  font-weight: bold;
+  color: mat-color($success) !important;
+  align-items: center;
+}
+
+.uploader-status ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: mat-color($active, 400);
+}
