@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, transferArrayItem} from '@angular/cdk/drag-drop';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material';
@@ -48,9 +48,7 @@ export class TodolistComponent implements OnInit, OnDestroy {
   }
 
   drop(event: CdkDragDrop<Task[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
+    if (event.previousContainer !== event.container) {
       if (this.isAuth) {
         const currentTaskID: string = event.item.element.nativeElement.id;
         const currentTask: Task = event.previousContainer.data.find(t => t.id === currentTaskID);

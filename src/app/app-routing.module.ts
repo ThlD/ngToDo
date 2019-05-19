@@ -10,7 +10,7 @@ const routes: Routes = [
   {path: 'todo', component: TodolistComponent}];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

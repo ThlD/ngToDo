@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Subject} from 'rxjs';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+
 
 import {AuthData} from './auth-data.model';
 import {UiService} from '../shared/services/ui.service';
