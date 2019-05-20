@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
 
 import {AuthService} from './auth/auth.service';
 import {ThemeService} from './shared/services/theme.service';
@@ -9,16 +9,21 @@ import {ThemeService} from './shared/services/theme.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  isDarkTheme: Observable<boolean>;
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
+  checkboxState: boolean;
+  themeSub: Subscription;
 
   constructor(private authService: AuthService,
               private themeService: ThemeService) {
   }
 
   ngOnInit() {
-    this.isDarkTheme = this.themeService.isDarkTheme;
+    this.checkboxState = this.themeService.getCheckboxState();
     this.authService.initAuthListener();
+  }
+
+  ngAfterViewInit() {
+    this.themeSub = this.themeService.onCheckboxChanged.subscribe(state => this.checkboxState = state);
   }
 
   onSidenavToggle(sidenav) {
@@ -27,6 +32,12 @@ export class AppComponent implements OnInit {
 
   closeSidenav(sidenav) {
     sidenav.close();
+  }
+
+  ngOnDestroy() {
+    if (this.themeSub) {
+      this.themeSub.unsubscribe();
+    }
   }
 }
 

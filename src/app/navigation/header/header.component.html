@@ -17,14 +17,18 @@
       Добавить задачу
     </button>
     <div>
-      <mat-slide-toggle fxHide fxShow.gt-sm [checked]="isDarkTheme | async" (change)="toggleDarkTheme($event.checked)">
+      <mat-slide-toggle fxHide
+                        fxShow.gt-sm
+                        [checked]="checkboxState"
+                        (change)="toggleDarkTheme($event.checked)">
         Затемнить
       </mat-slide-toggle>
       <button fxHide.gt-sm mat-icon-button [matMenuTriggerFor]="theme">
         <mat-icon>color_lens</mat-icon>
       </button>
       <mat-menu #theme="matMenu">
-        <mat-slide-toggle [checked]="isDarkTheme | async" (change)="toggleDarkTheme($event.checked)">
+        <mat-slide-toggle [checked]="checkboxState"
+                          (change)="toggleDarkTheme($event.checked)">
           Dark theme
         </mat-slide-toggle>
       </mat-menu>

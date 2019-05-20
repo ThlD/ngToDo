@@ -1,12 +1,12 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {MatDialog} from '@angular/material';
+import {NavigationEnd, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {FormControl} from '@angular/forms';
+
 import {CreateTaskComponent} from '../../todolist/create-task/create-task.component';
-import {Task} from '../../todolist/shared/models/task.model';
 import {TaskService} from '../../todolist/shared/services/task.service';
 import {AuthService} from '../../auth/auth.service';
-import {Observable, Subscription} from 'rxjs';
-import {NavigationEnd, Router} from '@angular/router';
-import {el} from '@angular/platform-browser/testing/src/browser_util';
 import {ThemeService} from '../../shared/services/theme.service';
 
 @Component({
@@ -21,7 +21,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   nameSub: Subscription;
   userName: string;
   isTodoPage = false;
-  isDarkTheme: Observable<boolean>;
+  checkboxState: boolean;
+  enableDarkTheme: FormControl;
 
   constructor(private dialog: MatDialog,
               private taskService: TaskService,
@@ -32,13 +33,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.checkboxState = this.themeService.getCheckboxState();
+    this.enableDarkTheme = new FormControl(this.checkboxState);
+
     this.authSub = this.authService.isAuthChange.subscribe(isAuth => {
       this.isAuth = isAuth;
     });
     this.nameSub = this.authService.isUserNameChanged.subscribe(name => {
       this.userName = name;
     });
-    this.isDarkTheme = this.themeService.isDarkTheme;
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.isTodoPage = event.url === '/todo';
@@ -46,8 +49,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleDarkTheme(checked: boolean) {
-    this.themeService.setDarkTheme(checked);
+  toggleDarkTheme(state: boolean) {
+    this.themeService.setDarkTheme(state);
   }
 
   openDialog(): void {
